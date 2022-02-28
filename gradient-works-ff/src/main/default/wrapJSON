@@ -1,0 +1,12 @@
+public class WrapJSON {
+    @AuraEnabled
+   public cls_movies[] movies;
+  public class cls_movies {
+       public Integer id;  //1
+       public String title;    //The Fast and the Furious
+       public String release_date; //2001-06-22T00:00:00Z
+       public String opening_revenue;  //40,089,015
+   }
+   
+ 
+}
