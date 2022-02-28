@@ -1,0 +1,51 @@
+Public Class FetchMoview{
+   @AuraEnabled(cacheable=true)
+   public static list<movies > getMoviesDetails(){
+       wrapJSON  WrapResponse = new wrapJSON  ();
+       String endPoint = 'https://api.gradientworks.dev/ff/movies';
+       Http h = new Http();
+       HttpRequest req = new HttpRequest();
+       req.setMethod('GET');
+       req.setEndpoint(endPoint);
+       HttpResponse res = h.send(req);
+       System.debug('>>>>'+res.getstatusCode());
+       System.debug('>>>>'+res.getBody());
+       WrapResponse = (wrapJSON  ) System.JSON.deserialize(res.getBody(), wrapJSON  .class);
+       
+       list<movies >  lstMov = new list<movies > ();
+       for(wrapJSON.cls_movies   obj :WrapResponse.movies ){
+           string curr = obj.opening_revenue.remove(',');
+         //  lstMov.add(new movies (obj.title));
+           lstMov.add(new movies (obj.id,obj.title,obj.release_date,Decimal.valueOf(curr )));
+       
+       }
+       System.debug('WrapResponse ---'+lstMov);
+       return lstMov;
+
+ }
+ 
+  public class movies {
+       @AuraEnabled
+       public Integer id;  //1
+       @AuraEnabled
+       public String title;    //The Fast and the Furious
+         @AuraEnabled
+       public string release_date; //2001-06-22T00:00:00Z
+         @AuraEnabled
+       public decimal opening_revenue;  //40,089,015
+       
+       Public movies (Integer id,String title,string release_date,decimal opening_revenue){
+     
+       
+          this.id = id;
+           this.title = title;
+          this.release_date = release_date;
+           this.opening_revenue= opening_revenue;
+       
+       }
+       
+       
+       
+   }
+ 
+ }
